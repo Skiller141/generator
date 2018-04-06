@@ -1,0 +1,87 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.top-menu-block {
+    background: #333;
+    color: #eee;
+    font-size: 20px;
+    text-align: center;
+    height: 50px;
+    width: 100%;
+    padding: 10px;
+}
+
+.top-menu-block h3 {
+    display: inline-block;
+}
+
+.main {
+    position: relative;
+    padding-top: 0.1px;
+}
+
+.right-menu {
+    background: #333;
+    color: #eee;
+    text-align: center;
+    height: 100%;
+    width: 300px;
+    padding: 10px;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    border-top: 1px solid #eee;
+    display: none;
+}
+
+.settings-link {
+    float: right;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.toggle {
+    display: none;
+}
+
+.logo {
+    width: 300px;
+    height: 150px;
+    background: rgb(33, 34, 95);
+    margin: 20px 10px;
+    text-align: center;
+    color: #fff;
+    padding-top: 0.1px;
+    display: table;
+}
+
+.logo h1 {
+    margin: 50px 0;
+}
+
+.logo-pos-radio {
+    margin: 5px 15px 0 5px;
+}
+
+.logo-pos-left {
+    margin-left: 10px;
+}
+
+.logo-pos-center {
+    margin: 20px auto;
+}
+
+.logo-pos-right {
+    float: right;
+}
+
+#out {
+    width: 200px;
+    height: 200px;
+    background: url('../img/default-logo.png');
+    background-size: 100% 100%;
+    margin: 10px auto;
+}
