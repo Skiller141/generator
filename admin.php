@@ -40,6 +40,7 @@ if(isset($_SESSION['email'])){
     if(!glob("users/$email/*", GLOB_ONLYDIR)){
         $countFolders = 0;
     }
+    
     $prjName = [];
     if(isset($_SESSION['count-dir-before'])){
         $_SESSION['count-dir-before'] = $countFoldersBefore;
