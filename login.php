@@ -1,15 +1,16 @@
 <?php
     require_once('connect.php');
-    session_start();
     if(isset($_POST) & !empty($_POST)){
         $email = mysqli_real_escape_string($conn, $_POST['email']);
         $pwd = md5($_POST['password']);
         $sql = "SELECT * FROM users WHERE email='$email' AND pass='$pwd'";
 
         $result = mysqli_query($conn, $sql);
-        $count = mysqli_num_rows($result);
+        $count = count(mysqli_num_rows($result));
         
         if($count == 1){
+            echo $count;
+            session_start();
             $_SESSION['email'] = $email;
         } else {
             $fmsg = "Invalid Email/Password";
