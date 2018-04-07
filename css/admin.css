@@ -5,10 +5,19 @@
 }
 
 
+/* html,
+body {
+    min-width: 100%;
+    min-height: 100vh;
+} */
+
+
 /******************Autorisation***********************/
 
 .main-contaner {
-    position: relative;
+    position: absolute;
+    width: 100%;
+    float: left;
 }
 
 .my-contaner {
@@ -80,11 +89,12 @@ input[type='submit'] {
     color: #eee;
     padding: 10px;
     float: left;
-    position: relative;
 }
 
 .content {
     float: left;
+    background: #eee;
+    width: calc(100% - 250px);
 }
 
 .items {
@@ -109,13 +119,13 @@ input[type='submit'] {
 }
 
 .sett-contaner {
-    border: 1px solid #333;
+    /* border: 1px solid #333; */
+    margin-top: 50px;
 }
 
 .main-title {
     text-align: center;
     color: red;
-    float: left;
 }
 
 .new-project-btn {
