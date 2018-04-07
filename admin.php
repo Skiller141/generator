@@ -1,26 +1,14 @@
 <?php
 session_start();
 require_once('connect.php');
-if(isset($_SESSION['email'])){
+if(isset($_SESSION)){
     $email = $_SESSION['email'];
-    $prjTitle = $_SESSION['project-title'];
+    // $prjTitle = $_SESSION['project-title'];
     $smsg = "User already logged in as ".$email;
-    // echo '<pre>';
-    // print_r($_SESSION);
-    
-    // $sql = "SELECT * FROM users_projects";
-    // $result = mysqli_query($conn, $sql);
-    // if (mysqli_num_rows($result) > 0) {
-    //     while($row = mysqli_fetch_array($result)) {
-    //         $rowArray[] = $row;
-    //     }
-    // }
-    function logOut() {
+   
+    if(isset($_GET['logout'])){
         session_destroy();
         header('location: login.php');
-    }
-    if(isset($_GET['logout'])){
-        logOut();
     }
 
     if(isset($_GET['project'])){
@@ -40,15 +28,39 @@ if(isset($_SESSION['email'])){
     if(!glob("users/$email/*", GLOB_ONLYDIR)){
         $countFolders = 0;
     }
-    
+    $_SESSION['count-dir-before'] = $countFoldersBefore;
     $prjName = [];
     if(isset($_SESSION['count-dir-before'])){
-        $_SESSION['count-dir-before'] = $countFoldersBefore;
         $prjExistsDir = glob("users/$email/*", GLOB_ONLYDIR);
         foreach($prjExistsDir as $key => $value) {
-            $prjName[] = str_replace("users/$email/", "", $value);
+            // $prjName[] = str_replace("users/$email/", "", $value);
+            $prjName[] = basename($value);
         }
         $JSONprjName = $prjName;
+    }
+
+    if(isset($_GET['createZip'])){
+        $zip = new ZipArchive;
+        $prjTitle = $_SESSION['project-title'];
+        $download = "users/$email/$prjTitle/$prjTitle.zip";
+        $zip->open($download, ZipArchive::CREATE);
+        foreach (glob("users/$email/$prjTitle/*") as $file) {
+            $zip->addFile(basename($file));
+        }
+        $zip->close();
+        if(file_exists($download)){
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="'.basename($download).'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($download));
+            flush(); // Flush system output buffer
+            readfile($download);
+            unlink($download);
+            exit;
+        }
     }
     
 } else {
@@ -108,7 +120,7 @@ if(isset($_SESSION['email'])){
                 alert('Maximum 5 projects');
             } else {
                 var xhr = new XMLHttpRequest();
-                xhr.open('GET', 'add-project2.php?project-title=' + prjTitleVal);
+                xhr.open('GET', 'add-project.php?project-title=' + prjTitleVal);
                 xhr.send();  
             }
             newPrjPupup.style.display = 'none';
