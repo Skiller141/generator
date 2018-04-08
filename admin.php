@@ -67,36 +67,41 @@ if(isset($_SESSION)){
     if(isset($_GET['removePrj'])){
         $prjTitle = $_SESSION['project-title'];
         
-        $prjFiles = glob("users/$email/$prjTitle/*.*");
-        foreach($prjFiles as $value) {
-            unlink($value);
-        }
+        // $prjFiles = glob("users/$email/$prjTitle/*.*");
+        // foreach($prjFiles as $value) {
+        //     unlink($value);
+        // }
         
-        $prjChildDir = glob("users/$email/$prjTitle/*", GLOB_ONLYDIR);
-        foreach($prjChildDir as $value) {
-            rmdir($value);
-        }
+        // $prjChildDir = glob("users/$email/$prjTitle/*", GLOB_ONLYDIR);
+        // foreach($prjChildDir as $value) {
+        //     rmdir($value);
+        // }
 
-        $prjDir = glob("users/$email/$prjTitle", GLOB_ONLYDIR);
-        foreach($prjDir as $value) {
-            rmdir($value);
+        // $prjDir = glob("users/$email/$prjTitle", GLOB_ONLYDIR);
+        // foreach($prjDir as $value) {
+        //     rmdir($value);
+        // }
+
+        $dir = "users/$email/$prjTitle";
+        function rmrf($dir){
+            foreach (glob($dir) as $file) {
+                if (is_dir($file)) {
+                    rmrf("$file/*");
+                    rmdir($file);
+                } else {
+                    unlink($file);
+                }
+            }
         }
+        rmrf($dir);
 
         $_SESSION['count-dir-before'] = $_SESSION['count-dir-before'] - 1;
-        // foreach($JSONprjName as $key => $value){
         
         if($key = array_search($prjTitle, $JSONprjName) !== false){
             unset($JSONprjName[$key]);
         }
         unset($_SESSION['project-title']);
-        // }
-        // echo '<pre>';
-        // print_r($JSONprjName);
     }
-    // echo $_SESSION['project-title'];
-    // echo '<pre>';
-    // print_r($JSONprjName);
-    
 } else {
     header('location: login.php');
 }
@@ -123,7 +128,7 @@ if(isset($_SESSION)){
                 <?php
                 $prjExistsDir = glob("users/$email/*", GLOB_ONLYDIR);
                 foreach($prjExistsDir as $key => $value) {
-                    $prjName = str_replace("users/$email/", "", $value);
+                    $prjName = basename($value);
                     echo "<a href='admin.php?project=$prjName' class='new_prj new_prj-$key'>$prjName</a>";
                 }
                 ?>
@@ -152,7 +157,6 @@ if(isset($_SESSION)){
             var countDir = "<?php echo $_SESSION['count-dir-before']; ?>";
             var prjTitleVal = this['project-title'].value;
             if(countDir > 4) {
-                // e.preventDefault();
                 alert('Maximum 5 projects');
             } else {
                 var xhr = new XMLHttpRequest();
@@ -166,8 +170,6 @@ if(isset($_SESSION)){
             var prjNameArr = <?php echo json_encode($JSONprjName); ?>;
             for(var i = 0; i < prjNameArr.length; i++) {
                 if(prjNameArr[i] === prjTitleVal) {
-                    // e.preventDefault();
-                    // alert('Project with this title exists');
                     prjExistsPopup.style.display = 'block';
                     mask.style.display = 'block';
                     close.style.display = 'block';
