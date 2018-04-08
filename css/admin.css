@@ -142,7 +142,8 @@ input[type='submit'] {
     background: url('../img/226562-64 (1).png');
 }
 
-.new-project-pupup {
+.new-project-popup,
+.prj-exists-popup {
     display: none;
     width: 500px;
     margin-top: 250px;
@@ -155,15 +156,15 @@ input[type='submit'] {
     margin-left: -250px;
 }
 
-.new-project-pupup h2 {
+.new-project-popup h2 {
     text-align: center;
 }
 
-.new-project-pupup input[type='text'] {
+.new-project-popup input[type='text'] {
     margin: 10px;
 }
 
-.new-project-pupup label {
+.new-project-popup label {
     margin-left: 70px;
 }
 

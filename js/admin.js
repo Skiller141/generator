@@ -1,24 +1,27 @@
 var newPrjBtn = document.getElementsByClassName('new-project-btn')[0];
-var newPrjPupup = document.getElementsByClassName('new-project-pupup')[0];
+var newPrjPopup = document.getElementsByClassName('new-project-popup')[0];
+var prjExistsPopup = document.getElementsByClassName('prj-exists-popup')[0];
 var mask = document.getElementsByClassName('mask')[0];
 var close = document.getElementsByClassName('close')[0];
 
 newPrjBtn.addEventListener('click', function() {
-    newPrjPupup.style.display = 'block';
+    newPrjPopup.style.display = 'block';
     mask.style.display = 'block';
     close.style.display = 'block';
 });
 
 mask.addEventListener('click', function() {
-    newPrjPupup.style.display = 'none';
+    newPrjPopup.style.display = 'none';
     mask.style.display = 'none';
     close.style.display = 'none';
+    prjExistsPopup.style.display = 'none';
 });
 
 close.addEventListener('click', function() {
-    newPrjPupup.style.display = 'none';
+    newPrjPopup.style.display = 'none';
     mask.style.display = 'none';
     close.style.display = 'none';
+    prjExistsPopup.style.display = 'none';
 });
 
 // var addProjectForm = document.getElementById('add-project');

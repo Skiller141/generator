@@ -30,6 +30,7 @@ if(isset($_SESSION)){
     }
     $_SESSION['count-dir-before'] = $countFoldersBefore;
     $prjName = [];
+    $JSONprjName = [];
     if(isset($_SESSION['count-dir-before'])){
         $prjExistsDir = glob("users/$email/*", GLOB_ONLYDIR);
         foreach($prjExistsDir as $key => $value) {
@@ -62,6 +63,39 @@ if(isset($_SESSION)){
             exit;
         }
     }
+
+    if(isset($_GET['removePrj'])){
+        $prjTitle = $_SESSION['project-title'];
+        
+        $prjFiles = glob("users/$email/$prjTitle/*.*");
+        foreach($prjFiles as $value) {
+            unlink($value);
+        }
+        
+        $prjChildDir = glob("users/$email/$prjTitle/*", GLOB_ONLYDIR);
+        foreach($prjChildDir as $value) {
+            rmdir($value);
+        }
+
+        $prjDir = glob("users/$email/$prjTitle", GLOB_ONLYDIR);
+        foreach($prjDir as $value) {
+            rmdir($value);
+        }
+
+        $_SESSION['count-dir-before'] = $_SESSION['count-dir-before'] - 1;
+        // foreach($JSONprjName as $key => $value){
+        
+        if($key = array_search($prjTitle, $JSONprjName) !== false){
+            unset($JSONprjName[$key]);
+        }
+        unset($_SESSION['project-title']);
+        // }
+        // echo '<pre>';
+        // print_r($JSONprjName);
+    }
+    // echo $_SESSION['project-title'];
+    // echo '<pre>';
+    // print_r($JSONprjName);
     
 } else {
     header('location: login.php');
@@ -101,7 +135,7 @@ if(isset($_SESSION)){
         </div> 
         <div class="mask"></div>
         <div class="close"></div>
-        <div class="new-project-pupup">
+        <div class="new-project-popup">
             <h2>New project</h2>
             <form id="add-project">
                 <label for="project-title">Project title</label>
@@ -109,29 +143,35 @@ if(isset($_SESSION)){
                 <input type="submit" value="Add project">
             </form>
         </div>
+        <div class="prj-exists-popup">Project with this title exists</div>
     </div>
     <script src="js/admin.js"></script>
     <script>
         document.forms['add-project'].addEventListener('submit', function(e) {
+            var prjExistsPopup = document.getElementsByClassName('prj-exists-popup')[0];
             var countDir = "<?php echo $_SESSION['count-dir-before']; ?>";
             var prjTitleVal = this['project-title'].value;
-            if(countDir >= 5) {
-                e.preventDefault();
+            if(countDir > 4) {
+                // e.preventDefault();
                 alert('Maximum 5 projects');
             } else {
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', 'add-project.php?project-title=' + prjTitleVal);
                 xhr.send();  
             }
-            newPrjPupup.style.display = 'none';
+            newPrjPopup.style.display = 'none';
             mask.style.display = 'none';
             close.style.display = 'none';
             
             var prjNameArr = <?php echo json_encode($JSONprjName); ?>;
             for(var i = 0; i < prjNameArr.length; i++) {
                 if(prjNameArr[i] === prjTitleVal) {
+                    // e.preventDefault();
+                    // alert('Project with this title exists');
+                    prjExistsPopup.style.display = 'block';
+                    mask.style.display = 'block';
+                    close.style.display = 'block';
                     e.preventDefault();
-                    alert('Project with this title exists');
                 }
             }
         });
