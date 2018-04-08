@@ -66,21 +66,6 @@ if(isset($_SESSION)){
 
     if(isset($_GET['removePrj'])){
         $prjTitle = $_SESSION['project-title'];
-        
-        // $prjFiles = glob("users/$email/$prjTitle/*.*");
-        // foreach($prjFiles as $value) {
-        //     unlink($value);
-        // }
-        
-        // $prjChildDir = glob("users/$email/$prjTitle/*", GLOB_ONLYDIR);
-        // foreach($prjChildDir as $value) {
-        //     rmdir($value);
-        // }
-
-        // $prjDir = glob("users/$email/$prjTitle", GLOB_ONLYDIR);
-        // foreach($prjDir as $value) {
-        //     rmdir($value);
-        // }
 
         $dir = "users/$email/$prjTitle";
         function rmrf($dir){
@@ -95,8 +80,7 @@ if(isset($_SESSION)){
         }
         rmrf($dir);
 
-        $_SESSION['count-dir-before'] = $_SESSION['count-dir-before'] - 1;
-        
+        $_SESSION['count-dir-before']--;
         if($key = array_search($prjTitle, $JSONprjName) !== false){
             unset($JSONprjName[$key]);
         }
@@ -148,12 +132,12 @@ if(isset($_SESSION)){
                 <input type="submit" value="Add project">
             </form>
         </div>
-        <div class="prj-exists-popup">Project with this title exists</div>
+        <div class="prj-error-popup">Project with this title exists</div>
     </div>
     <script src="js/admin.js"></script>
     <script>
         document.forms['add-project'].addEventListener('submit', function(e) {
-            var prjExistsPopup = document.getElementsByClassName('prj-exists-popup')[0];
+            var prjErrorPopup = document.getElementsByClassName('prj-error-popup')[0];
             var countDir = "<?php echo $_SESSION['count-dir-before']; ?>";
             var prjTitleVal = this['project-title'].value;
             if(countDir > 4) {
@@ -170,7 +154,7 @@ if(isset($_SESSION)){
             var prjNameArr = <?php echo json_encode($JSONprjName); ?>;
             for(var i = 0; i < prjNameArr.length; i++) {
                 if(prjNameArr[i] === prjTitleVal) {
-                    prjExistsPopup.style.display = 'block';
+                    prjErrorPopup.style.display = 'block';
                     mask.style.display = 'block';
                     close.style.display = 'block';
                     e.preventDefault();

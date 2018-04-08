@@ -143,7 +143,7 @@ input[type='submit'] {
 }
 
 .new-project-popup,
-.prj-exists-popup {
+.prj-error-popup {
     display: none;
     width: 500px;
     margin-top: 250px;
