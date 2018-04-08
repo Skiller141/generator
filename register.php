@@ -16,7 +16,7 @@ if(isset($_POST) & !empty($_POST)){
             reg_date TIMESTAMP
         )";
         if(mysqli_query($conn, $sqlCreateTable)){
-            createDirAndSession($conn, $email, $pwd, $repPwd);
+            createDirAndSession();
         }
     } else {
         $sqlselect = "SELECT * FROM users WHERE email='$email'";
@@ -25,7 +25,7 @@ if(isset($_POST) & !empty($_POST)){
         if($count == 1){
             $fmsg = 'Такой Email уже существует';
         } else {
-            createDirAndSession($conn, $email, $pwd, $repPwd);
+            createDirAndSession();
         } 
     }
 }

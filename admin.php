@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('connect.php');
+require_once('functions.php');
 if(isset($_SESSION)){
     $email = $_SESSION['email'];
     // $prjTitle = $_SESSION['project-title'];
@@ -110,11 +111,7 @@ if(isset($_SESSION)){
             </ul>
             <div class="active-projects">
                 <?php
-                $prjExistsDir = glob("users/$email/*", GLOB_ONLYDIR);
-                foreach($prjExistsDir as $key => $value) {
-                    $prjName = basename($value);
-                    echo "<a href='admin.php?project=$prjName' class='new_prj new_prj-$key'>$prjName</a>";
-                }
+                outputDirTitle();
                 ?>
             </div>
             <a class="new-project-btn"></a>

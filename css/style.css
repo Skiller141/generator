@@ -1,87 +1,55 @@
+@import 'fonts.css';
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-.top-menu-block {
+body {
+    font-family: 'Roboto Condensed';
+}
+
+.main-contaner {}
+
+.top-menu-contaner {
+    display: fixed;
     background: #333;
     color: #eee;
-    font-size: 20px;
-    text-align: center;
     height: 50px;
-    width: 100%;
-    padding: 10px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
 }
 
-.top-menu-block h3 {
-    display: inline-block;
-}
-
-.main {
-    position: relative;
-    padding-top: 0.1px;
-}
-
-.right-menu {
-    background: #333;
-    color: #eee;
-    text-align: center;
-    height: 100%;
-    width: 300px;
-    padding: 10px;
-    position: absolute;
-    top: 50px;
-    right: 0;
-    border-top: 1px solid #eee;
-    display: none;
-}
-
-.settings-link {
-    float: right;
-    margin-right: 15px;
-    cursor: pointer;
-}
-
-.toggle {
-    display: none;
-}
-
-.logo {
-    width: 300px;
-    height: 150px;
-    background: rgb(33, 34, 95);
-    margin: 20px 10px;
-    text-align: center;
-    color: #fff;
-    padding-top: 0.1px;
+.top-menu {
     display: table;
+    height: 50px;
 }
 
-.logo h1 {
-    margin: 50px 0;
+.topLink {
+    display: table;
+    color: #eee;
+    padding: 5px 0;
+    margin: 10px 10px 0 0;
+    text-decoration: none;
+    position: relative;
+    float: left;
 }
 
-.logo-pos-radio {
-    margin: 5px 15px 0 5px;
+.topLink:first-child {
+    margin-left: 20px;
 }
 
-.logo-pos-left {
-    margin-left: 10px;
+.topLink:hover {
+    color: #ccc;
 }
 
-.logo-pos-center {
-    margin: 20px auto;
+.site-title {
+    margin-top: 10px;
 }
 
-.logo-pos-right {
-    float: right;
-}
-
-#out {
-    width: 200px;
-    height: 200px;
-    background: url('../img/default-logo.png');
-    background-size: 100% 100%;
-    margin: 10px auto;
+.logout {
+    margin: 15px 20px 0 0;
+    color: #eee;
+    text-decoration: none;
 }
