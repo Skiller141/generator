@@ -87,10 +87,32 @@ if(isset($_SESSION)){
         }
         unset($_SESSION['project-title']);
     }
-
-    if(isset($_POST['site-title'])){
-        echo $_POST('site-title');
+    /************************************* */
+    if(isset($_POST['project-title'])){
+        $configArr = ['site title' => $_POST['project-title']];
+        // echo '<pre>';
+        // print_r($configArr);
+        $myfile = fopen('config.json', 'w');
+        fwrite($myfile, json_encode($configArr));
+        fclose($myfile);
     }
+
+    if(isset($_FILES['logo-img'])){
+        $logo = "uploads/" . basename($_FILES['logo-img']['name']);
+        $check = getimagesize($_FILES['logo-img']['tmp_name']);
+        if($check !== false){
+
+        }
+        if(move_uploaded_file($_FILES['logo-img']['tmp_name'], $logo)){
+            echo "ok";
+        }
+        // echo '<pre>';
+        // print_r($_FILES);
+        // print_r($_POST);
+    }
+    // echo '<pre>';
+    //     print_r($_FILES);
+    //     print_r($_POST);
 } else {
     header('location: login.php');
 }
@@ -121,7 +143,21 @@ if(isset($_SESSION)){
             <a class="new-project-btn"></a>
         </div>
         <div class="content">
-           <div class="prj-contaner"><?php require('settings.php') ?></div>
+            <div class="prj-contaner">
+                <div class="sett-contaner">
+                    <h1 class="main-title">Settings of <?php echo $_SESSION['project-title']; ?></h1>
+
+                    <form method="POST" action="" id="settings-form" enctype="multipart/form-data">
+                        <label for="project-title">Project title</label><br>
+                        <input type="text" name="project-title" id="project-title"><br>
+                        <label for='logo-img'>Logo</label><br>
+                        <input type="file" id="logo-img" name="logo-img"><br>
+                        <input type="submit" value="Save">
+                    </form>
+                    <a href="admin.php?createZip=true">Download ZIP</a>
+                    <a href="admin.php?removePrj=true">Remove project</a>
+                </div>
+           </div>
         </div> 
         <div class="mask"></div>
         <div class="close"></div>
@@ -162,14 +198,6 @@ if(isset($_SESSION)){
                         e.preventDefault();
                     }
                 }
-            });
-            
-            document.FORMS['settings-form'].addEventListener('submit', function(){
-                var siteTitle = this['site-title'].value;
-                var xhr = new XMLHttpRequest()
-                // var data = 'site-title=' + siteTitle;
-                xhr.open('POST', '');
-                xhr.send(siteTitle);
             });
         });
     </script>

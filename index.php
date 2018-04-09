@@ -23,7 +23,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/style.css">
-    <title>Document</title>
+    <title><?php if(isset($_POST['site-title'])){echo $_POST['site-title'];}else{echo 'Document';} ?></title>
 </head>
 <body>
     <div class="main-contaner">
@@ -37,6 +37,7 @@
         </section>
         <header class="header">
             <div class="logo"></div>
+            <div class="out"></div>
         </header>
     </div>
     <script src="js/main.js"></script>
