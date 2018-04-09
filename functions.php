@@ -42,4 +42,34 @@ function outputDirTitle(){
         echo "<a href='admin.php?project=$prjName' class='new_prj new_prj-$key'>$prjName</a>";
     }
 }
+
+function resizeImage($filename, $newcopy, $max_width, $max_height){
+    list($orig_width, $orig_height, $image_type) = getimagesize($filename);
+    $width = $orig_width;
+    $height = $orig_height;
+    if($width > $max_width){
+        $width =($max_height / $height) * $width;
+        $height = $max_height;
+    }
+    if($height > $max_height){
+        $height =($max_width / $width) * $height;
+        $width = $max_width;
+    }
+    switch ($image_type)
+    {
+        case 1: $src = imagecreatefromgif($filename); break;
+        case 2: $src = imagecreatefromjpeg($filename);  break;
+        case 3: $src = imagecreatefrompng($filename); break;
+        default: return '';  break;
+    }
+
+    $image_p = imagecreatetruecolor($width, $height);
+    imagecopyresampled($image_p, $src, 0, 0, 0, 0, $width, $height, $orig_width, $orig_height);
+    imagejpeg($image_p, $newcopy, 80);
+
+    return $image_p;
+}
+// $filename = 'img/korona_pool_01.jpg';
+// $newcopy = 'img/korona_pool_01-changed.jpg';
+// resizeImage($filename, $newcopy, 300, 300);
 ?>

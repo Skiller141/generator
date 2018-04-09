@@ -100,12 +100,16 @@ if(isset($_SESSION)){
     if(isset($_FILES['logo-img'])){
         $logo = "uploads/" . basename($_FILES['logo-img']['name']);
         $check = getimagesize($_FILES['logo-img']['tmp_name']);
-        if($check !== false){
-
+        if($check === false){
+            $logoErr = '<span class="logoErr">The file is not image</span>';
+        } else {
+            if(move_uploaded_file($_FILES['logo-img']['tmp_name'], $logo)){
+                $filename = 'uploads/' . basename($_FILES['logo-img']['name']);;
+                $newcopy = 'uploads/' . basename($_FILES['logo-img']['name']);;
+                resizeImage($filename, $newcopy, 300, 300);
+            }
         }
-        if(move_uploaded_file($_FILES['logo-img']['tmp_name'], $logo)){
-            echo "ok";
-        }
+        
         // echo '<pre>';
         // print_r($_FILES);
         // print_r($_POST);
@@ -128,78 +132,78 @@ if(isset($_SESSION)){
     <title>Admin panel</title>
 </head>
 <body>
-    <div class="main-contaner">
-        <?php if(isset($smsg)){?><div class="logged-in"><?php echo $smsg; ?></div><?php } ?>
-        <div class="main-menu">
-            <ul class="main-menu-list">
-                <a href="index.php"><li class="items item-1">Перейти на сайт</li></a>
-                <a href="admin.php?logout=true"><li class="items item-5">Log out</li></a>
-            </ul>
-            <div class="active-projects">
-                <?php
-                outputDirTitle();
-                ?>
-            </div>
-            <a class="new-project-btn"></a>
+<div class="main-contaner">
+    <?php if(isset($smsg)){?><div class="logged-in"><?php echo $smsg; ?></div><?php } ?>
+    <div class="main-menu">
+        <ul class="main-menu-list">
+            <a href="index.php"><li class="items item-1">Перейти на сайт</li></a>
+            <a href="admin.php?logout=true"><li class="items item-5">Log out</li></a>
+        </ul>
+        <div class="active-projects">
+            <?php
+            outputDirTitle();
+            ?>
         </div>
-        <div class="content">
-            <div class="prj-contaner">
-                <div class="sett-contaner">
-                    <h1 class="main-title">Settings of <?php echo $_SESSION['project-title']; ?></h1>
-
-                    <form method="POST" action="" id="settings-form" enctype="multipart/form-data">
-                        <label for="project-title">Project title</label><br>
-                        <input type="text" name="project-title" id="project-title"><br>
-                        <label for='logo-img'>Logo</label><br>
-                        <input type="file" id="logo-img" name="logo-img"><br>
-                        <input type="submit" value="Save">
-                    </form>
-                    <a href="admin.php?createZip=true">Download ZIP</a>
-                    <a href="admin.php?removePrj=true">Remove project</a>
-                </div>
-           </div>
-        </div> 
-        <div class="mask"></div>
-        <div class="close"></div>
-        <div class="new-project-popup">
-            <h2>New project</h2>
-            <form id="add-project">
-                <label for="project-title">Project title</label>
-                <input type="text" name="project-title" id="project-title">
-                <input type="submit" value="Add project">
-            </form>
-        </div>
-        <div class="prj-error-popup">Project with this title exists</div>
+        <a class="new-project-btn"></a>
     </div>
-    <script src="js/admin.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function(){
-            document.forms['add-project'].addEventListener('submit', function(e) {
-                var prjErrorPopup = document.getElementsByClassName('prj-error-popup')[0];
-                var countDir = "<?php echo $_SESSION['count-dir-before']; ?>";
-                var prjTitleVal = this['project-title'].value;
-                if(countDir > 4) {
-                    alert('Maximum 5 projects');
-                } else {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('GET', 'add-project.php?project-title=' + prjTitleVal);
-                    xhr.send();  
+    <div class="content">
+        <div class="prj-contaner">
+            <div class="sett-contaner">
+                <h1 class="main-title">Settings of <?php echo $_SESSION['project-title']; ?></h1>
+
+                <form method="POST" action="" id="settings-form" enctype="multipart/form-data">
+                    <label for="project-title">Project title</label><br>
+                    <input type="text" name="project-title" id="project-title"><br>
+                    <label for='logo-img'>Logo</label><br>
+                    <input type="file" id="logo-img" name="logo-img"><?php if(isset($logoErr)){echo $logoErr;} ?><br>
+                    <input type="submit" value="Save">
+                </form>
+                <a href="admin.php?createZip=true">Download ZIP</a>
+                <a href="admin.php?removePrj=true">Remove project</a>
+            </div>
+       </div>
+    </div> 
+    <div class="mask"></div>
+    <div class="close"></div>
+    <div class="new-project-popup">
+        <h2>New project</h2>
+        <form id="add-project">
+            <label for="project-title">Project title</label>
+            <input type="text" name="project-title" id="project-title">
+            <input type="submit" value="Add project">
+        </form>
+    </div>
+    <div class="prj-error-popup">Project with this title exists</div>
+</div>
+<script src="js/admin.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        document.forms['add-project'].addEventListener('submit', function(e) {
+            var prjErrorPopup = document.getElementsByClassName('prj-error-popup')[0];
+            var countDir = "<?php echo $_SESSION['count-dir-before']; ?>";
+            var prjTitleVal = this['project-title'].value;
+            if(countDir > 4) {
+                alert('Maximum 5 projects');
+            } else {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'add-project.php?project-title=' + prjTitleVal);
+                xhr.send();  
+            }
+            newPrjPopup.style.display = 'none';
+            mask.style.display = 'none';
+            close.style.display = 'none';
+            
+            var prjNameArr = <?php echo json_encode($JSONprjName); ?>;
+            for(var i = 0; i < prjNameArr.length; i++) {
+                if(prjNameArr[i] === prjTitleVal) {
+                    prjErrorPopup.style.display = 'block';
+                    mask.style.display = 'block';
+                    close.style.display = 'block';
+                    e.preventDefault();
                 }
-                newPrjPopup.style.display = 'none';
-                mask.style.display = 'none';
-                close.style.display = 'none';
-                
-                var prjNameArr = <?php echo json_encode($JSONprjName); ?>;
-                for(var i = 0; i < prjNameArr.length; i++) {
-                    if(prjNameArr[i] === prjTitleVal) {
-                        prjErrorPopup.style.display = 'block';
-                        mask.style.display = 'block';
-                        close.style.display = 'block';
-                        e.preventDefault();
-                    }
-                }
-            });
+            }
         });
-    </script>
+    });
+</script>
 </body>
 </html>
