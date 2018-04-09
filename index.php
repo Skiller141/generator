@@ -35,6 +35,9 @@
             <div class="site-title"><h1>GENERATOR</h1></div>
             <a href="index.php?logout=true" class="logout">Log Out</a>
         </section>
+        <header class="header">
+            <div class="logo"></div>
+        </header>
     </div>
     <script src="js/main.js"></script>
 </body>

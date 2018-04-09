@@ -11,11 +11,15 @@ body {
 
 .main-contaner {}
 
+
+/************************Top fixed menu*****************************/
+
 .top-menu-contaner {
     display: fixed;
     background: #333;
     color: #eee;
     height: 50px;
+    position: relative;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
@@ -45,11 +49,29 @@ body {
 }
 
 .site-title {
-    margin-top: 10px;
+    position: absolute;
+    width: 150px;
+    text-align: center;
+    top: 10px;
+    left: 50%;
+    margin-left: -75px;
 }
 
 .logout {
     margin: 15px 20px 0 0;
     color: #eee;
     text-decoration: none;
+}
+
+
+/************************Header***********************/
+
+.header {
+    background: #eee;
+    height: 600px;
+}
+
+.logo {
+    min-width: 150;
+    min-height: 150px;
 }

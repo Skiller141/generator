@@ -87,6 +87,10 @@ if(isset($_SESSION)){
         }
         unset($_SESSION['project-title']);
     }
+
+    if(isset($_POST['site-title'])){
+        echo $_POST('site-title');
+    }
 } else {
     header('location: login.php');
 }
@@ -133,30 +137,40 @@ if(isset($_SESSION)){
     </div>
     <script src="js/admin.js"></script>
     <script>
-        document.forms['add-project'].addEventListener('submit', function(e) {
-            var prjErrorPopup = document.getElementsByClassName('prj-error-popup')[0];
-            var countDir = "<?php echo $_SESSION['count-dir-before']; ?>";
-            var prjTitleVal = this['project-title'].value;
-            if(countDir > 4) {
-                alert('Maximum 5 projects');
-            } else {
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET', 'add-project.php?project-title=' + prjTitleVal);
-                xhr.send();  
-            }
-            newPrjPopup.style.display = 'none';
-            mask.style.display = 'none';
-            close.style.display = 'none';
-            
-            var prjNameArr = <?php echo json_encode($JSONprjName); ?>;
-            for(var i = 0; i < prjNameArr.length; i++) {
-                if(prjNameArr[i] === prjTitleVal) {
-                    prjErrorPopup.style.display = 'block';
-                    mask.style.display = 'block';
-                    close.style.display = 'block';
-                    e.preventDefault();
+        document.addEventListener('DOMContentLoaded', function(){
+            document.forms['add-project'].addEventListener('submit', function(e) {
+                var prjErrorPopup = document.getElementsByClassName('prj-error-popup')[0];
+                var countDir = "<?php echo $_SESSION['count-dir-before']; ?>";
+                var prjTitleVal = this['project-title'].value;
+                if(countDir > 4) {
+                    alert('Maximum 5 projects');
+                } else {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', 'add-project.php?project-title=' + prjTitleVal);
+                    xhr.send();  
                 }
-            }
+                newPrjPopup.style.display = 'none';
+                mask.style.display = 'none';
+                close.style.display = 'none';
+                
+                var prjNameArr = <?php echo json_encode($JSONprjName); ?>;
+                for(var i = 0; i < prjNameArr.length; i++) {
+                    if(prjNameArr[i] === prjTitleVal) {
+                        prjErrorPopup.style.display = 'block';
+                        mask.style.display = 'block';
+                        close.style.display = 'block';
+                        e.preventDefault();
+                    }
+                }
+            });
+            
+            document.FORMS['settings-form'].addEventListener('submit', function(){
+                var siteTitle = this['site-title'].value;
+                var xhr = new XMLHttpRequest()
+                // var data = 'site-title=' + siteTitle;
+                xhr.open('POST', '');
+                xhr.send(siteTitle);
+            });
         });
     </script>
 </body>
