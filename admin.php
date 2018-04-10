@@ -88,27 +88,39 @@ if(isset($_SESSION)){
         unset($_SESSION['project-title']);
     }
     /************************************* */
-    if(isset($_POST['project-title'])){
-        $configArr = ['site title' => $_POST['project-title']];
+    $configArr = [];
+    if(isset($_POST['submit'])){
+        if(isset($_FILES['logo-img'])){
+            $dir = 'uploads/';
+            $check = getimagesize($_FILES['logo-img']['tmp_name']);
+            if($check === false){
+                $logoErr = '<span class="logoErr">The file is not image</span>';
+            } else {
+                $filename = $dir . basename($_FILES['logo-img']['name']);
+                $newcopy = explode(".", $filename);
+                $newcopy[0] = $dir.'logo.';
+                $newcopy = $newcopy[0] . $newcopy[1];
+                
+                if(move_uploaded_file($_FILES['logo-img']['tmp_name'], $filename)){
+                    resizeImage($filename, $newcopy, 150, 150); //the function in functions.php
+                    unlink($filename);
+                    $configArr['site logo'] = $newcopy;
+                }
+            }
+        }
+    
+        if(isset($_POST['project-title'])){
+            $configArr['site title'] = $_POST['project-title'];
+        }
+
         $myfile = fopen('config.json', 'w');
         fwrite($myfile, json_encode($configArr));
         fclose($myfile);
+        
     }
-
-    if(isset($_FILES['logo-img'])){
-        $logo = "uploads/" . basename($_FILES['logo-img']['name']);
-        $check = getimagesize($_FILES['logo-img']['tmp_name']);
-        if($check === false){
-            $logoErr = '<span class="logoErr">The file is not image</span>';
-        } else {
-            if(move_uploaded_file($_FILES['logo-img']['tmp_name'], $logo)){
-                $filename = 'uploads/' . basename($_FILES['logo-img']['name']);;
-                $newcopy = 'uploads/' . basename($_FILES['logo-img']['name']);;
-                resizeImage($filename, $newcopy, 300, 300); //the function in functions.php
-                array_push($configArr, "'site logo' => $filename");
-            }
-        }
-    }
+    // echo '<pre>';
+    // print_r($configArr);
+    // echo '</pre>';
 } else {
     header('location: login.php');
 }
@@ -148,7 +160,7 @@ if(isset($_SESSION)){
                     <input type="text" name="project-title" id="project-title"><br>
                     <label for='logo-img'>Logo</label><br>
                     <input type="file" id="logo-img" name="logo-img"><?php if(isset($logoErr)){echo $logoErr;} ?><br>
-                    <input type="submit" value="Save">
+                    <input type="submit" value="Save" name="submit">
                 </form>
                 <a href="admin.php?createZip=true">Download ZIP</a>
                 <a href="admin.php?removePrj=true">Remove project</a>
@@ -196,6 +208,17 @@ if(isset($_SESSION)){
             }
         });
     });
+    
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function(){
+        if(this.readyState === 4 & this.status === 200){
+            var myObj = JSON.parse(this.responseText);
+            console.log(myObj);
+            document.getElementById('project-title').value = myObj['site title'];
+        }
+    }
+    xhr.open('GET', 'config.json');
+    xhr.send();
 </script>
 </body>
 </html>

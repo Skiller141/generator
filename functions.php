@@ -67,7 +67,7 @@ function resizeImage($filename, $newcopy, $max_width, $max_height){
     imagecopyresampled($image_p, $src, 0, 0, 0, 0, $width, $height, $orig_width, $orig_height);
     imagejpeg($image_p, $newcopy, 80);
 
-    return $image_p;
+    // return $image_p;
 }
 
 // $return = resizeImage($filename, $newcopy, $max_width, $max_height);
