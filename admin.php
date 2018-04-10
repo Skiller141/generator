@@ -113,6 +113,11 @@ if(isset($_SESSION)){
             $configArr['site title'] = $_POST['project-title'];
         }
 
+        if(isset($_POST['switch_left']) || isset($_POST['switch_right'])){
+            // $configArr['logo img or text']
+            echo 'ok';
+        }
+
         $myfile = fopen('config.json', 'w');
         fwrite($myfile, json_encode($configArr));
         fclose($myfile);
@@ -160,6 +165,15 @@ if(isset($_SESSION)){
                     <input type="text" name="project-title" id="project-title"><br>
                     <label for='logo-img'>Logo</label><br>
                     <input type="file" id="logo-img" name="logo-img"><?php if(isset($logoErr)){echo $logoErr;} ?><br>
+
+                    <div class="switch-field">
+                        <div class="switch-title">Is this awesome?</div>
+                        <input type="radio" id="switch_left" name="switch_2" value="yes" checked/>
+                        <label for="switch_left">Logo image</label>
+                        <input type="radio" id="switch_right" name="switch_2" value="no" />
+                        <label for="switch_right">Logo text</label>
+                    </div>
+
                     <input type="submit" value="Save" name="submit">
                 </form>
                 <a href="admin.php?createZip=true">Download ZIP</a>
@@ -173,7 +187,7 @@ if(isset($_SESSION)){
         <h2>New project</h2>
         <form id="add-project">
             <label for="project-title">Project title</label>
-            <input type="text" name="project-title" id="project-title">
+            <input type="text" name="add-project-title" id="add-project-title">
             <input type="submit" value="Add project">
         </form>
     </div>
@@ -185,7 +199,7 @@ if(isset($_SESSION)){
         document.forms['add-project'].addEventListener('submit', function(e) {
             var prjErrorPopup = document.getElementsByClassName('prj-error-popup')[0];
             var countDir = "<?php echo $_SESSION['count-dir-before']; ?>";
-            var prjTitleVal = this['project-title'].value;
+            var prjTitleVal = this['add-project-title'].value;
             if(countDir > 4) {
                 alert('Maximum 5 projects');
             } else {
@@ -208,17 +222,6 @@ if(isset($_SESSION)){
             }
         });
     });
-    
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function(){
-        if(this.readyState === 4 & this.status === 200){
-            var myObj = JSON.parse(this.responseText);
-            console.log(myObj);
-            document.getElementById('project-title').value = myObj['site title'];
-        }
-    }
-    xhr.open('GET', 'config.json');
-    xhr.send();
 </script>
 </body>
 </html>
