@@ -25,7 +25,7 @@ if(isset($_POST) & !empty($_POST)){
         if($count == 1){
             $fmsg = 'Такой Email уже существует';
         } else {
-            createDirAndSession();
+            createDirAndSession();//the function in functions.php
         } 
     }
 }

@@ -69,7 +69,7 @@ function resizeImage($filename, $newcopy, $max_width, $max_height){
 
     return $image_p;
 }
-// $filename = 'img/korona_pool_01.jpg';
-// $newcopy = 'img/korona_pool_01-changed.jpg';
-// resizeImage($filename, $newcopy, 300, 300);
+
+// $return = resizeImage($filename, $newcopy, $max_width, $max_height);
+// echo $return;
 ?>

@@ -90,8 +90,6 @@ if(isset($_SESSION)){
     /************************************* */
     if(isset($_POST['project-title'])){
         $configArr = ['site title' => $_POST['project-title']];
-        // echo '<pre>';
-        // print_r($configArr);
         $myfile = fopen('config.json', 'w');
         fwrite($myfile, json_encode($configArr));
         fclose($myfile);
@@ -106,17 +104,11 @@ if(isset($_SESSION)){
             if(move_uploaded_file($_FILES['logo-img']['tmp_name'], $logo)){
                 $filename = 'uploads/' . basename($_FILES['logo-img']['name']);;
                 $newcopy = 'uploads/' . basename($_FILES['logo-img']['name']);;
-                resizeImage($filename, $newcopy, 300, 300);
+                resizeImage($filename, $newcopy, 300, 300); //the function in functions.php
+                array_push($configArr, "'site logo' => $filename");
             }
         }
-        
-        // echo '<pre>';
-        // print_r($_FILES);
-        // print_r($_POST);
     }
-    // echo '<pre>';
-    //     print_r($_FILES);
-    //     print_r($_POST);
 } else {
     header('location: login.php');
 }
