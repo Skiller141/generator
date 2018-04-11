@@ -112,20 +112,19 @@ if(isset($_SESSION)){
         if(isset($_POST['project-title'])){
             $configArr['site title'] = $_POST['project-title'];
         }
-
-        if(isset($_POST['switch_left']) || isset($_POST['switch_right'])){
-            // $configArr['logo img or text']
-            echo 'ok';
+        
+        if(isset($_POST['switch_2'])){
+            $configArr['switch_2'] = $_POST['switch_2'];
         }
 
         $myfile = fopen('config.json', 'w');
         fwrite($myfile, json_encode($configArr));
         fclose($myfile);
-        
+
+        echo '<pre>';
+        print_r($_POST['switch_2']);
+        echo '</pre>';
     }
-    // echo '<pre>';
-    // print_r($configArr);
-    // echo '</pre>';
 } else {
     header('location: login.php');
 }
@@ -167,8 +166,8 @@ if(isset($_SESSION)){
                     <input type="file" id="logo-img" name="logo-img"><?php if(isset($logoErr)){echo $logoErr;} ?><br>
 
                     <div class="switch-field">
-                        <div class="switch-title">Is this awesome?</div>
-                        <input type="radio" id="switch_left" name="switch_2" value="yes" checked/>
+                        <div class="switch-title">Logo image or text</div>
+                        <input type="radio" id="switch_left" name="switch_2" value="yes"/>
                         <label for="switch_left">Logo image</label>
                         <input type="radio" id="switch_right" name="switch_2" value="no" />
                         <label for="switch_right">Logo text</label>
