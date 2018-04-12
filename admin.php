@@ -124,9 +124,9 @@ if(isset($_SESSION)){
         fwrite($myfile, json_encode($configArr));
         fclose($myfile);
 
-        // echo '<pre>';
-        // print_r($_POST['switch_2']);
-        // echo '</pre>';
+        echo '<pre>';
+        print_r($_POST['switch_2']);
+        echo '</pre>';
     }
 } else {
     header('location: login.php');
