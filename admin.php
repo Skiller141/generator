@@ -91,25 +91,22 @@ if(isset($_SESSION)){
     $configArr = [];
     if(isset($_POST['submit'])){
         if(isset($_FILES['logo-img'])){
-            // if(sizeof($_FILES['logo-img'])){
-                $dir = 'uploads/';
-                if(getimagesize($_FILES['logo-img']['tmp_name'])){
-                    $filename = $dir . basename($_FILES['logo-img']['name']);
-                    $newcopy = explode(".", $filename);
-                    $newcopy[0] = $dir.'logo.';
-                    $newcopy = $newcopy[0] . $newcopy[1];
-                    
-                    if(move_uploaded_file($_FILES['logo-img']['tmp_name'], $filename)){
-                        resizeImage($filename, $newcopy, 150, 150); //the function in functions.php
-                        unlink($filename);
-                        $configArr['site logo'] = $newcopy;
-                    }
-                } else {
-                    $logoErr = '<span class="logoErr">The file is not image</span>';
+            $dir = 'uploads/';
+            $check = getimagesize($_FILES['logo-img']['tmp_name']);
+            if($check !== false){
+                $filename = $dir . basename($_FILES['logo-img']['name']);
+                $newcopy = explode(".", $filename);
+                $newcopy[0] = $dir.'logo.';
+                $newcopy = $newcopy[0] . $newcopy[1];
+                
+                if(move_uploaded_file($_FILES['logo-img']['tmp_name'], $filename)){
+                    resizeImage($filename, $newcopy, 150, 150); //the function in functions.php
+                    unlink($filename);
+                    $configArr['site logo'] = $newcopy;
                 }
-                
-                
-            // }
+            } else {
+                $logoErr = '<span class="logoErr">The file is not image</span>';
+            }
         }
     
         if(isset($_POST['project-title'])){
@@ -124,9 +121,9 @@ if(isset($_SESSION)){
         fwrite($myfile, json_encode($configArr));
         fclose($myfile);
 
-        echo '<pre>';
-        print_r($_POST['switch_2']);
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($_POST['switch_2']);
+        // echo '</pre>';
     }
 } else {
     header('location: login.php');
@@ -163,11 +160,7 @@ if(isset($_SESSION)){
                 <h1 class="main-title">Settings of <?php echo $_SESSION['project-title']; ?></h1>
 
                 <form method="POST" action="" id="settings-form" enctype="multipart/form-data">
-                    <label for="project-title">Project title</label><br>
-                    <input type="text" name="project-title" id="project-title"><br>
-                    <label for='logo-img'>Logo</label><br>
-                    <input type="file" id="logo-img" name="logo-img"><?php if(isset($logoErr)){echo $logoErr;} ?><br>
-
+                    <h2 align="center">LOGO</h2>
                     <div class="switch-field">
                         <div class="switch-title">Logo image or text</div>
                         <input type="radio" id="switch_left" name="switch_2" value="yes"/>
@@ -175,7 +168,15 @@ if(isset($_SESSION)){
                         <input type="radio" id="switch_right" name="switch_2" value="no" />
                         <label for="switch_right">Logo text</label>
                     </div>
-
+                    <div class="add-logo-field">
+                        <label for='logo-img'>Logo</label><br>
+                        <input type="file" id="logo-img" name="logo-img"><?php if(isset($logoErr)){echo $logoErr;} ?><br>
+                    </div>
+                    <div class="add-text-field">
+                        <label for="project-title">Project title</label><br>
+                        <input type="text" name="project-title" id="project-title"><br>
+                    </div>
+                    <hr style="margin: 20px 0;">
                     <input type="submit" value="Save" name="submit">
                 </form>
                 <a href="admin.php?createZip=true">Download ZIP</a>

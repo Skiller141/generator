@@ -230,7 +230,7 @@ input[type='submit'] {
 
 .switch-field {
     font-family: "Lucida Grande", Tahoma, Verdana, sans-serif;
-    padding: 10px;
+    padding: 10px 10px 0 10px;
     overflow: hidden;
 }
 
@@ -287,4 +287,22 @@ input[type='submit'] {
 
 .switch-field label:last-of-type {
     border-radius: 0 4px 4px 0;
+}
+
+/*********************************/
+
+.add-logo-field,
+.add-text-field {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    width: 400px;
+    height: 200px;
+    margin: 0 10px;
+    display: none;
+}
+
+input#switch_left:checked #switch-field + div.add-logo-field {
+    display: block;
+}
+input#switch_right:checked + div.add-text-field {
+    display: block;
 }
