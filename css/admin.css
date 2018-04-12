@@ -282,11 +282,11 @@ input[type='submit'] {
 }
 
 .switch-field label:first-of-type {
-    border-radius: 4px 0 0 4px;
+    border-radius: 4px 0 0 0;
 }
 
 .switch-field label:last-of-type {
-    border-radius: 0 4px 4px 0;
+    border-radius: 0 4px 0 0;
 }
 
 /*********************************/
@@ -295,14 +295,13 @@ input[type='submit'] {
 .add-text-field {
     border: 1px solid rgba(0, 0, 0, 0.3);
     width: 400px;
-    height: 200px;
     margin: 0 10px;
+    padding: 20px;
     display: none;
 }
 
-input#switch_left:checked #switch-field + div.add-logo-field {
-    display: block;
-}
-input#switch_right:checked + div.add-text-field {
-    display: block;
+.logo-now {
+    width: 150px;
+    height: 150px;
+    /* border: 1px solid #000; */
 }

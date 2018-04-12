@@ -34,24 +34,28 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('project-title').value = myObj['site title'];
             if (myObj['switch_2'] == 'yes') {
                 document.getElementById('switch_left').checked = 'true';
-                // document.getElementsByClassName('add-logo-field')[0].style.display = 'block';
-                // document.getElementsByClassName('add-text-field')[0].style.display = 'none';
+                document.getElementsByClassName('add-logo-field')[0].style.display = 'block';
+                document.getElementsByClassName('add-text-field')[0].style.display = 'none';
 
             } else if (myObj['switch_2'] == 'no') {
                 document.getElementById('switch_right').checked = 'true';
-                // document.getElementsByClassName('add-text-field')[0].style.display = 'block';
-                // document.getElementsByClassName('add-logo-field')[0].style.display = 'none';
-
+                document.getElementsByClassName('add-text-field')[0].style.display = 'block';
+                document.getElementsByClassName('add-logo-field')[0].style.display = 'none';
             }
-
+            document.querySelector('.logo-now').style.background = "url("+myObj['site logo']+")";
         }
     }
     xhr.open('GET', 'config.json');
     xhr.send();
 
-    // document.forms['settings-form'].addEventListener('submit', function() {
-    //     if (this['switch_left'].checked) {
-    //         console.log('ok');
-    //     }
-    // });
+    document.forms['settings-form'].addEventListener('change', function(){
+        if(document.getElementById('switch_left').checked){
+            document.getElementsByClassName('add-logo-field')[0].style.display = 'block';
+            document.getElementsByClassName('add-text-field')[0].style.display = 'none';
+        } else if (document.getElementById('switch_right').checked){
+            document.getElementsByClassName('add-text-field')[0].style.display = 'block';
+            document.getElementsByClassName('add-logo-field')[0].style.display = 'none';
+
+        }
+    });
 });

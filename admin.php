@@ -90,7 +90,7 @@ if(isset($_SESSION)){
     /************************************* */
     $configArr = [];
     if(isset($_POST['submit'])){
-        if(isset($_FILES['logo-img'])){
+        if(file_exists($_FILES['logo-img']['tmp_name'])){
             $dir = 'uploads/';
             $check = getimagesize($_FILES['logo-img']['tmp_name']);
             if($check !== false){
@@ -171,6 +171,8 @@ if(isset($_SESSION)){
                     <div class="add-logo-field">
                         <label for='logo-img'>Logo</label><br>
                         <input type="file" id="logo-img" name="logo-img"><?php if(isset($logoErr)){echo $logoErr;} ?><br>
+                        <h3>Logo now</h3>
+                        <div class="logo-now"></div>
                     </div>
                     <div class="add-text-field">
                         <label for="project-title">Project title</label><br>
