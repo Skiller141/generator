@@ -31,7 +31,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (this.readyState === 4 & this.status === 200) {
             var myObj = JSON.parse(this.responseText);
             console.log(myObj);
-            document.getElementById('add-project-title').value = myObj['site title'];
+            document.getElementById('project-title').value = myObj['site title'];
+            if (myObj['switch_2'] == 'yes') {
+                document.getElementById('switch_left').checked = 'true';
+            } else if (myObj['switch_2'] == 'no') {
+                document.getElementById('switch_right').checked = 'true';
+            }
+
         }
     }
     xhr.open('GET', 'config.json');
